@@ -1,0 +1,99 @@
+from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
+from django.urls import reverse
+from django.utils import timezone
+
+from webchat.forms import RegForm , LoginForm
+from webchat.models import Profile , Rooms , Message
+@login_required
+def index(request):
+    return render(request, 'webchat/index.html', { "message": list(range(15)),})
+
+@login_required
+def room(request):
+    rooms=Rooms.objects.filter(users__user = request.user, create_date__lte=timezone.now()).order_by('-create_date')
+    return render(request, 'webchat/room.html', {'rooms':rooms})
+
+def auth(request):
+        if request.method == 'POST':
+            form = LoginForm(request.POST)
+            url = reverse('webchat:room')
+            if form.is_valid():
+                # if request.user.is_authenticated():
+                #     logout(request)
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                user = authenticate(username = username, password = password)
+                if user is not None:
+                    print('lol')
+                    login(request, user)
+                    return HttpResponseRedirect(url)
+                
+            print(form.errors)
+        else:
+            form = LoginForm()
+        return render(request, 'webchat/auth.html', {
+            'form': form,
+            # 'next': url
+            })
+
+def reg(request):
+    if request.method == 'POST':
+        form = RegForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            url = reverse('webchat:chat')
+            return HttpResponseRedirect(url)
+    else:
+        form = RegForm()
+    return render(request, 'webchat/registration.html', {'form' : form})
+
+def mylogout(request):
+    logout(request)
+    url = reverse('webchat:auth')
+    return HttpResponseRedirect(url)
+
+def open_chat(request, pk):
+    open_chat=get_object_or_404(Rooms, pk=pk )
+    return render(request, 'webchat/index.html', { 'open_chat':open_chat })
+
+
+
+def create_chat(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name == '':
+            return HttpResponseRedirect(reverse('webchat:room'))
+        chat = Rooms()
+        chat.admin = get_object_or_404(Profile, user=request.user)
+        chat.name = name
+        chat.save()
+
+        chat.users.add(get_object_or_404(Profile, user=request.user))
+        chat.save()
+
+    return HttpResponseRedirect(reverse('webchat:open_chat', args=(chat.pk,)))
+
+def send_message(request, pk):
+    if request.method == 'POST':
+        room = get_object_or_404(Rooms, pk = pk)
+        text = request.POST.get('text')
+        if text == '':
+            return HttpResponseRedirect(reverse('webchat:open_chat', args=(pk,)))
+        message = Message()
+        message.room = room
+        message.text = text
+        message.author = get_object_or_404(Profile, user = request.user)
+        message.save()
+    return HttpResponseRedirect(reverse('webchat:open_chat', args=(pk,))) 
+
+
+
+
+
+# Create your views here.

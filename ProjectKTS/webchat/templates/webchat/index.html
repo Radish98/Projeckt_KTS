@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% load staticfiles %} {% block content %}
+<div class="chat">
+    {% for message in open_chat.message_set.all %} {% if message.author.user == request.user %}
+    <div class="message">
+        <div class="mes_auth">
+            <img class="mes_av" src="{% static 'img/av.png' %}">
+            <span class="mes_name">
+                {{ message.author.user.first_name }} {{ message.author.user.last_name }}
+            </span>
+            <span class="mes_date">
+                {{ message.date_pubs|date:'j E Y f' }}
+            </span>
+        </div>
+        <div class="mes_text">{{ message.text }}</div>
+    </div>
+    {% else %}
+    <div class="message">
+        <div class="mes_auth">
+            <img class="mes_av" src="{% static 'img/av.png' %}">
+            <span class="mes_name">
+                {{ message.author.user.first_name }} {{ message.author.user.last_name }}
+            </span>
+            <span class="mes_date">
+                {{ message.date_pubs|date:'j E Y f' }}
+            </span>
+        </div>
+        <div class="mes_text">{{ message.text }}</div>
+    </div>
+    {% endif %} {% endfor %}
+</div>
+<div class="input fixed-bottom">
+    <form method="post" action="{% url 'webchat:send_message' open_chat.id %}">
+        {% csrf_token %}
+        <div class="in_attach"></div>
+
+        <input type="text" name="text" value="" placeholder="Введите сообщение" size="100%" />
+        <a type="submit">
+            <div class="in_send"></div>
+        </a>
+    </form>
+    <div>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">Настройки чата</a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="#">Добавить участника</a>
+                </li>
+                <li>
+                    <b href="#">Удалиться из чата</b>
+                </li>
+            </ul>
+        </li>
+    </div>
+</div>
+{% endblock %}

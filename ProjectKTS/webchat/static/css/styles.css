@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Roboto, sans-serif;
+    background: white;
+    font-weight: 300;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 20px;
+    height: -webkit-calc(100% - 60px - 100px);
+    height: -moz-calc(100% - 60px - 100px);
+    height: calc(100% - 60px - 100px);
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.message {
+    padding: 10px 20px;
+    margin: 5px;
+    background: rgb(154, 247, 226);
+    font-size: 12px;
+    transition: background-color 0.3s linear;
+    border-radius: 20px ;
+}
+
+.message:hover {
+    background: rgb(48, 230, 130);
+}
+
+.mes_av {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.mes_auth {
+    margin-bottom: 10px;
+}
+
+.mes_name {
+    display: inline-block;
+}
+
+.mes_text {
+    padding: 2px;
+    background: rgb(137, 221, 193);
+}
+
+.mes_date {
+    float: right;
+    color: rgb(110, 147, 153);
+    line-height: 30px;
+}
+
+.input {
+    height: 60px;
+    width: calc(100% - 40px - 50px);
+    padding: 10px 40px;
+    box-sizing: border-box;
+}
+
+input {
+    outline: aquamarine;
+}
+
+.in_attach {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    background: url(../img/attach.png) no-repeat center;
+    background-size: contain;
+    margin: 10px;
+}
+
+.in_send {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url(../img/send1.png) no-repeat center;
+    background-size: contain;
+    vertical-align: middle;
+}
+
+.form form {
+    width: 300px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+
+
+/* bootstrap */
+.form-width {
+    max-width: 25rem;
+}
+
+.has-float-label {
+    position: relative;
+}
+
+.has-float-label label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: text;
+    font-size: 75%;
+    opacity: 1;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+    top: -.5em;
+    left: 0.75rem;
+    z-index: 3;
+    line-height: 1;
+    padding: 0 1px;
+}
+
+.has-float-label label::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    background: white;
+    height: 2px;
+    top: 50%;
+    left: -.2em;
+    right: -.2em;
+    z-index: -1;
+}
+
+.has-float-label .form-control::-webkit-input-placeholder {
+    opacity: 1;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus)::-webkit-input-placeholder {
+    opacity: 0;
+}
+
+.has-float-label .form-control:placeholder-shown:not(:focus)+label {
+    font-size: 150%;
+    opacity: .5;
+    top: .3em;
+}
+
+.input-group .has-float-label {
+    display: table-cell;
+}
+
+.input-group .has-float-label .form-control {
+    border-radius: 0.25rem;
+}
+
+.input-group .has-float-label:not(:last-child) .form-control {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.input-group .has-float-label:not(:first-child) .form-control {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-left: -1px;
+}
+/* bootsrap end */
+
+
+.headof{
+    display: flex;
+    justify-content: space-between;
+    background-color: #82e2dd ;
+    border-color: #82e2dd ;
+    border-radius: 15px ;
+}
+
+.room {
+    padding: 20px 25%;
+    height: -webkit-calc(100%  - 100px);
+    height: -moz-calc(100%  - 100px);
+    height: calc(100%  - 100px);
+    box-sizing: border-box;
+    overflow: auto;
+}

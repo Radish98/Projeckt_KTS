@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% load staticfiles %} {% block content %}
+
+<div class="p-x-1 p-y-3">
+    <form method='post' action="{% url 'webchat:reg' %}" enctype="multipart/form-data" class="card card-block m-x-auto bg-faded form-width">
+        {% csrf_token %}
+        <legend class="m-b-1 text-xs-center">Регистрация</legend>
+        {% for field in form %}
+            <div class="form-group input-group">
+                <span class="has-float-label">
+                    {{ field.as_widget }}
+                    <label for="{{field.id_for_lable}}">{{field.label}}</label>
+                    <div class="">
+                        {{field.errors}}
+                    </div>
+                </span>
+            </div>
+        {% endfor %}
+        <div class="text-xs-center">
+            <button class="btn btn-block btn-primary" type="submit">Регистрация</button>
+        </div>
+    </form>
+    {% for err in form.non_field_errors %}
+    <div class="alert alert-danger"> {{ err }} </div>
+    {% endfor %}
+</div>
+{% endblock %}

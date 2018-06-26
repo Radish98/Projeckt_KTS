@@ -1,0 +1,18 @@
+                <!-- {% if request.user.is_authenticated %} -->
+                            <!-- {{request.user.first_name}} {{request.user.last_name}} -->
+                <!-- {% else %}
+                <div class="ml-auto mr-5">
+
+                    <button type="button" class="btn btn-link ml-2">
+                        <a class="__a-brand" href="#">
+                            Войти
+                        </a>
+                    </button>
+
+                    <button type="button" class="btn __btn ml-2">
+                        <a class="__a" href="#">
+                            Регистрация
+                        </a>
+                    </button>
+                </div>
+                {% endif %} -->

@@ -1,0 +1,119 @@
+<html>
+
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" />
+</head>
+<title>beggining</title>
+
+<body>
+    <nav class="navbar navbar-default headof" role="navigation">
+        <div class="container-fluid headof">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">FMchat</a>
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Link</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">Action</a>
+                            </li>
+                            <li>
+                                <a href="#">Another action</a>
+                            </li>
+                            <li>
+                                <a href="#">Something else here</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">Separated link</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">One more separated link</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
+            <!-- Группируем ссылки, формы, выпадающее меню и прочие элементы -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+
+            </div>
+            {% if request.user.is_authenticated %}
+            <ul class="navbar-nav ml-auto mr-5">
+                <li class="nav-item">
+                    <img src="{% static 'img/av.png' %}" width="40" height="40" class="img-thumbnail my-2">
+                </li>
+                <li class="nav-item dropdown">
+                    <p class="nav-link dropdown-toggle my-2 font-weight-bold" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        {{request.user.first_name}} {{request.user.last_name}}
+                    </p>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Настройки</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href='{% url 'webchat:mylogout' %}' next="{{request.path}}">Выйти</a>
+                    </div>
+                </li>
+            </ul>
+            {% else %}
+            <div class="ml-auto mr-5">
+
+                <button type="button" class="btn btn-link ml-2">
+                    <a class="__a-brand" href="{% url 'webchat:auth' %}">
+                        Войти
+                    </a>
+                </button>
+
+                <button type="button" class="btn __btn ml-2">
+                    <a class="__a" href="{% url 'webchat:reg' %}">
+                        Регистрация
+                    </a>
+                </button>
+            </div>
+            {% endif %}
+
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+
+    </nav>
+
+    <div class="container-fluid">
+        {% block content %} {% endblock %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
