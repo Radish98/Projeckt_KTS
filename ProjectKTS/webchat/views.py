@@ -7,16 +7,15 @@ from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from django.utils import timezone
 
-from webchat.forms import RegForm , LoginForm
-from webchat.models import Profile , Rooms , Message
-@login_required
-def index(request):
-    return render(request, 'webchat/index.html', { "message": list(range(15)),})
+from webchat.forms import RegForm , LoginForm ,InvateForm
+from webchat.models import Profile , Rooms , Message , Invite
+
 
 @login_required
 def room(request):
+    invites = Invite.objects.filter(recipient__user=request.user)
     rooms=Rooms.objects.filter(users__user = request.user, create_date__lte=timezone.now()).order_by('-create_date')
-    return render(request, 'webchat/room.html', {'rooms':rooms})
+    return render(request, 'webchat/room.html', {'rooms':rooms, 'invites':invites})
 
 def auth(request):
         if request.method == 'POST':
@@ -47,7 +46,7 @@ def reg(request):
         if form.is_valid():
             form.save()
 
-            url = reverse('webchat:chat')
+            url = reverse('webchat:room')
             return HttpResponseRedirect(url)
     else:
         form = RegForm()
@@ -59,8 +58,9 @@ def mylogout(request):
     return HttpResponseRedirect(url)
 
 def open_chat(request, pk):
+    form = invite(request, pk)
     open_chat=get_object_or_404(Rooms, pk=pk )
-    return render(request, 'webchat/index.html', { 'open_chat':open_chat })
+    return render(request, 'webchat/index.html', { 'open_chat':open_chat , 'form':form })
 
 
 
@@ -69,15 +69,15 @@ def create_chat(request):
         name = request.POST.get('name')
         if name == '':
             return HttpResponseRedirect(reverse('webchat:room'))
-        chat = Rooms()
-        chat.admin = get_object_or_404(Profile, user=request.user)
-        chat.name = name
-        chat.save()
+        room = Rooms()
+        room.admin = get_object_or_404(Profile, user=request.user)
+        room.name = name
+        room.save()
 
-        chat.users.add(get_object_or_404(Profile, user=request.user))
-        chat.save()
+        room.users.add(get_object_or_404(Profile, user=request.user))
+        room.save()
 
-    return HttpResponseRedirect(reverse('webchat:open_chat', args=(chat.pk,)))
+    return HttpResponseRedirect(reverse('webchat:open_chat', args=(room.pk,)))
 
 def send_message(request, pk):
     if request.method == 'POST':
@@ -92,8 +92,23 @@ def send_message(request, pk):
         message.save()
     return HttpResponseRedirect(reverse('webchat:open_chat', args=(pk,))) 
 
+def join(request, pk):
+    room = get_object_or_404(Rooms, pk = pk)
+    room.users.add(get_object_or_404(Profile, user=request.user))
 
+    invite = Invite.objects.filter(room__pk=pk)
+    invite.delete()
 
+    return HttpResponseRedirect(reverse('webchat:open_chat', args=(pk,)))
 
+def invite(request, pk):
+    if request.method == 'POST':
+        form = InvateForm(request.POST)
+        if form.is_valid():
+            form.save(request, pk)
+            pass
+    else:
+        form = InvateForm()
+    return form
 
 # Create your views here.

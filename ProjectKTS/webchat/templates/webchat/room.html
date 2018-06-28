@@ -1,10 +1,10 @@
 {% extends "base.html" %} {% load staticfiles %} {% block content %}
 
-<!-- <div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Введите username пользователя, которого хотите дабавить</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Введите название чата</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -12,34 +12,36 @@
             <form method="post" action="{% url 'webchat:create_chat'%}">
                 {% csrf_token %}
                 <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="Пользовательское имя" name="name" value="">
+                    <input type="text" class="form-control" placeholder="Название чата" name="name" value="">
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-primary">Отправить</button>
+                    <button type="submit" class="btn btn-primary">Создать</button>
                 </div>
             </form>
         </div>
     </div>
-</div> -->
+</div>
 
 <div class="room">
-    <div class="message">
-        <form method="post" action="{% url 'webchat:create_chat'%}">
-            {% csrf_token %}
-            <div class="modal-body">
-                <input type="text" class="form-control" placeholder="Пользовательское имя" name="name" value="">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button type="submit" class="btn btn-primary">Отправить</button>
-            </div>
-        </form>
+    <button type="submit" class="btn btn-primary" href="#" data-toggle="modal" data-target="#createModal">Создать чат</button>
+    {% for invite in invites %}
+    <div class="room-line">
+        <div class="mes_auth">
+            <img class="mes_av" src="{% static 'img/av.png' %}">
+            <span class="mes_name">
+                <a href="{% url 'webchat:join' invite.room.id %}">Вас пригласили в беседу {{invite.room.name}}</a>
+            </span>
+            <span class="mes_date">
+                {{invite.room.create_date|date:'j E Y f'}}
+            </span>
+        </div>
+        <div class="mes_text">last_message</div>
     </div>
+    {% endfor %}
     {% for room in rooms %}
-    <div class="message">
+    <div class="room-line">
         <div class="mes_auth">
             <img class="mes_av" src="{% static 'img/av.png' %}">
             <span class="mes_name">

@@ -1,7 +1,33 @@
 {% extends "base.html" %} {% load staticfiles %} {% block content %}
+<div class="modal" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Введите Логин пользователя</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'webchat:open_chat' open_chat.id%}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="text" class="form-control" placeholder="Пользовательское имя" name="username" value="">
+                    <div>
+                        {{ form.username.errors }}
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Пригласить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="chat">
     {% for message in open_chat.message_set.all %} {% if message.author.user == request.user %}
-    <div class="message">
+    <div class="message-my">
         <div class="mes_auth">
             <img class="mes_av" src="{% static 'img/av.png' %}">
             <span class="mes_name">
@@ -14,7 +40,7 @@
         <div class="mes_text">{{ message.text }}</div>
     </div>
     {% else %}
-    <div class="message">
+    <div class="message-other">
         <div class="mes_auth">
             <img class="mes_av" src="{% static 'img/av.png' %}">
             <span class="mes_name">
@@ -29,27 +55,30 @@
     {% endif %} {% endfor %}
 </div>
 <div class="input fixed-bottom">
-    <form method="post" action="{% url 'webchat:send_message' open_chat.id %}">
-        {% csrf_token %}
-        <div class="in_attach"></div>
-
-        <input type="text" name="text" value="" placeholder="Введите сообщение" size="100%" />
-        <a type="submit">
-            <div class="in_send"></div>
-        </a>
-    </form>
     <div>
-        <li class="dropdown">
+        <form method="post" action="{% url 'webchat:send_message' open_chat.id %}">
+            {% csrf_token %}
+            <div class="in_attach"></div>
+
+            <input type="text" name="text" value="" placeholder="Введите сообщение" size="100%" />
+            <a type="submit">
+                <div class="in_send"></div>
+            </a>
+        </form>
+    </div>
+    <div>
+        <li class="dropdown in_sett">
             <a class="dropdown-toggle" data-toggle="dropdown">Настройки чата</a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="#">Добавить участника</a>
+                    <a href="#" data-toggle="modal" data-target="#inviteModal">Добавить участника</a>
                 </li>
                 <li>
-                    <b href="#">Удалиться из чата</b>
+                    <a href="#">Удалиться из чата</a>
                 </li>
             </ul>
         </li>
     </div>
+
 </div>
 {% endblock %}

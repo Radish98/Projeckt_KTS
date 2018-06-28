@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from webchat.models import Profile
+from webchat.models import Profile , Invite, Rooms
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -65,4 +65,24 @@ class LoginForm(forms.Form):
                 user = authenticate(username=username, password=password)
                 if user is None:
                     raise forms.ValidationError('Неверный логин / пароль.')
+
+class InvateForm(forms.Form):
+    
+    username = forms.CharField(max_length=150)
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        r = User.objects.filter(username=username)
+        if not r.count():
+            raise ValidationError("Данного пользователя не существует")
+        return username
+
+    def save(self, request, room_id):
+        invite = Invite()
+        invite.room = get_object_or_404(Rooms, pk = room_id)
+        invite.recipient = get_object_or_404(Profile, user=get_object_or_404(User, username=self.cleaned_data['username']))
+        invite.sender = get_object_or_404(Profile, user=request.user)
+        invite.save()
+
+        return invite
     # TODO: Define form fields here

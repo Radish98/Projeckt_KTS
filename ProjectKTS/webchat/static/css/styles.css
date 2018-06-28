@@ -14,23 +14,43 @@ body {
     display: flex;
     flex-direction: column-reverse;
     padding: 20px;
-    height: -webkit-calc(100% - 60px - 100px);
-    height: -moz-calc(100% - 60px - 100px);
-    height: calc(100% - 60px - 100px);
+    height: -webkit-calc(100% - 70px - 100px);
+    height: -moz-calc(100% - 70px - 100px);
+    height: calc(100% - 70px - 100px);
     box-sizing: border-box;
     overflow: auto;
+
 }
 
-.message {
+
+.message-my {
     padding: 10px 20px;
-    margin: 5px;
+    left: 100px;
+    right: 0;
+    top: 100px;
+    bottom: 0;
+    margin: 5px 5px;
     background: rgb(154, 247, 226);
     font-size: 12px;
     transition: background-color 0.3s linear;
     border-radius: 20px ;
 }
 
-.message:hover {
+.message-other {
+    padding: 10px 20px;
+    margin-left: 5px;
+    position:left;
+    background: rgb(154, 247, 226);
+    font-size: 12px;
+    transition: background-color 0.3s linear;
+    border-radius: 20px ;
+}
+
+.message-other:hover {
+    background: rgb(48, 230, 130);
+}
+
+.message-my:hover {
     background: rgb(48, 230, 130);
 }
 
@@ -63,6 +83,8 @@ body {
 }
 
 .input {
+    display: flex;
+    justify-content: space-around;
     height: 60px;
     width: calc(100% - 40px - 50px);
     padding: 10px 40px;
@@ -91,6 +113,14 @@ input {
     background-size: contain;
     vertical-align: middle;
 }
+
+.in_sett {
+    display: inline-block;
+    width: 0px;
+    height: 0px;
+    vertical-align: middle;
+}
+
 
 .form form {
     width: 300px;
@@ -176,6 +206,7 @@ input {
 
 .headof{
     display: flex;
+    width: 100%;
     justify-content: space-between;
     background-color: #82e2dd ;
     border-color: #82e2dd ;
@@ -189,4 +220,17 @@ input {
     height: calc(100%  - 100px);
     box-sizing: border-box;
     overflow: auto;
+}
+
+.room-line {
+    padding: 10px 20px;
+    margin: 5px;
+    background: rgb(154, 247, 226);
+    font-size: 12px;
+    transition: background-color 0.3s linear;
+    border-radius: 20px ;
+}
+
+.room-line:hover {
+    background: rgb(48, 230, 130);
 }
